@@ -26,17 +26,19 @@ body
 
 .output
 {
+    display: flex;
     height: 100px;
     background-color: rgb(235, 235, 235);
     margin-bottom: 25px;
-    display: flex;
     justify-content: flex-end;
     padding: 0 5px 0 5px;
 }
-.output p
+#output_text
 {
     margin-top: 10px;
     font-size: 60px;
+    overflow: hidden;
+    direction: rtl;
 }
 .input
 {
