@@ -62,7 +62,7 @@ function listen()
     });
 
     //when an operator is pressed, the first operand and operator are saved
-    let operatorButtons = document.querySelectorAll('.operand');
+    let operatorButtons = document.querySelectorAll('.operator');
 
     operatorButtons.forEach((operatorButton) =>
     {
@@ -99,13 +99,23 @@ function operate(operand1, operand2, operator)
             return operand1 * operand2;
             break;
         case 'divide':
-            return operand1 / operand2;
+            if (operand2 == 0)
+            {
+                return 'Nice try Bub';
+            }
+            else
+            {
+                return operand1 / operand2;
+            }
             break;
         case 'add':
             return operand1 + operand2;
             break;
         case 'subtract':
             return operand1 - operand2;
+            break;
+        case 'modulo':
+            return operand1 % operand2;
             break;
     }
 }
