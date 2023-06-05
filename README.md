@@ -12,4 +12,4 @@ Bugs-to-Fix / Features to Add:
 
 * Yet to be seen
 
-[Live Preview]{https://danielpodgornyy.github.io/calculator/}
+[Live Preview](https://danielpodgornyy.github.io/calculator/)
