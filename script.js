@@ -15,6 +15,11 @@ function listen()
     numButtons.forEach((numButton) => {
         numButton.addEventListener('click', function addDigit(e)
         {
+            if (output.textContent[0] == 0 || isNaN(output.textContent))
+            {
+                output.textContent = '';
+            }
+
             output.textContent += e.currentTarget.textContent;
         });
     });
@@ -49,7 +54,7 @@ function listen()
         output.textContent = -(+output.textContent);
     });
 
-    //when the decimal is pressed
+    //when the decimal is pressed, a decimal is added if one isn't present
     let decimalButton = document.querySelector('#decimal');
 
     decimalButton.addEventListener('click', function AddDecimal()
@@ -68,12 +73,15 @@ function listen()
     {
         operatorButton.addEventListener('click', (e) =>
         {
-            operand1 = +(output.textContent);
-            operator = e.currentTarget.id;
-            operatorActive = true;
+            if (operatorActive == false)
+            {
+                operand1 = +(output.textContent);
+                operator = e.currentTarget.id;
+                operatorActive = true;
 
-            output.textContent = '';
-            hasDecimal = false;
+                output.textContent = '';
+                hasDecimal = false;
+            }
         });
     });
 
@@ -82,7 +90,7 @@ function listen()
 
     equalButton.addEventListener('click', () =>
     {
-        if (operatorActive)
+        if (operatorActive && output.textContent != '')
         {
             operand2 = +(output.textContent);
             output.textContent = operate(operand1, operand2, operator);
