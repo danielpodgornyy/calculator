@@ -73,6 +73,7 @@ function listen()
             operatorActive = true;
 
             output.textContent = '';
+            hasDecimal = false;
         });
     });
 
@@ -87,6 +88,7 @@ function listen()
             output.textContent = operate(operand1, operand2, operator);
 
             operatorActive = false;
+            hasDecimal = false;
         }
     });
 }
