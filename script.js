@@ -88,11 +88,11 @@ function listen()
         operatorButton.addEventListener('click', function UseOperator(e)
         {
             //only proceed if another operator isn't already active
-            if (!this.operatorActive)
+            if (!Calculator.operatorActive)
             {
                 Calculator.operand1 = +(output.textContent);
                 Calculator.operator = e.currentTarget.id;
-                Calculator.operatorActive = Calculator;
+                Calculator.operatorActive = true;
 
                 output.textContent = '';
             }
