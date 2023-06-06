@@ -15,6 +15,7 @@ function listen()
     numButtons.forEach((numButton) => {
         numButton.addEventListener('click', function addDigit(e)
         {
+            //if the first number is a zero or if there is a letter in the number, reset it
             if (output.textContent[0] == 0 || isNaN(output.textContent))
             {
                 output.textContent = '';
@@ -73,6 +74,7 @@ function listen()
     {
         operatorButton.addEventListener('click', (e) =>
         {
+            //only proceed if another operator isn't already active
             if (operatorActive == false)
             {
                 operand1 = +(output.textContent);
@@ -90,13 +92,21 @@ function listen()
 
     equalButton.addEventListener('click', () =>
     {
+        //only proceed if an operator is active and the textContent isn't empty
         if (operatorActive && output.textContent != '')
         {
             operand2 = +(output.textContent);
             output.textContent = operate(operand1, operand2, operator);
 
             operatorActive = false;
-            hasDecimal = false;
+            if (output.textContent.includes('.'))
+            {
+                hasDecimal = true;
+            }
+            else
+            {
+                hasDecimal = false;
+            }
         }
     });
 }
