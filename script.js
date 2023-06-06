@@ -3,17 +3,17 @@ listen();
 function listen()
 {
     let output = document.querySelector('#output_text');
-    let operatorActive = false;
-    let hasDecimal = false;
-    let operator;
-    let operand1;
-    let operand2;
+    output.textContent = '';
 
-    //for every button that is a number, its number is concatenated with what is output
-    let numButtons = document.querySelectorAll('#number');
+    //Object to hold the calculators properties
+    let Calculator = 
+    {
+        operatorActive: false,
+        operand1: null,
+        operand2: null,
+        operator: null,
 
-    numButtons.forEach((numButton) => {
-        numButton.addEventListener('click', function addDigit(e)
+        addDigit(inputEvent)
         {
             //if the first number is a zero or if there is a letter in the number, reset it
             if (output.textContent[0] == 0 || isNaN(output.textContent))
@@ -21,97 +21,101 @@ function listen()
                 output.textContent = '';
             }
 
-            output.textContent += e.currentTarget.textContent;
-        });
+            output.textContent += inputEvent.currentTarget.textContent;
+        },
+
+        Delete()
+        {
+            output.textContent = output.textContent.slice(0, -1);
+        },
+
+        Clear()
+        {
+            output.textContent = '';
+        },
+
+        ChangeSign()
+        {
+            output.textContent = -(+output.textContent);
+        },
+
+        AddDecimal()
+        {
+            if (!output.textContent.includes('.'))
+            {
+                output.textContent += ".";
+            }
+        },
+    }
+
+    //for every button that is a number, its number is concatenated with what is output
+    let numButtons = document.querySelectorAll('#number');
+
+    numButtons.forEach((numButton) => {
+        numButton.addEventListener('click', Calculator.addDigit);
     });
+
 
     //when delete is pressed, the number is trimmed off the edge
     let deleteButton = document.querySelector('#delete');
 
-    deleteButton.addEventListener('click',function Delete()
-    {
-        if (output.textContent[output.textContent.length - 1] === '.')
-        {
-            hasDecimal = false;
-        }
-    
-        output.textContent = output.textContent.slice(0, output.textContent.length - 1);
-    });
+    deleteButton.addEventListener('click', Calculator.Delete);
 
 
     //when clear is pressed, the output is turned into an empty string
     let clearButton = document.querySelector('#clear');
 
-    clearButton.addEventListener('click', function Clear()
-    {
-        output.textContent = '';
-    });
+    clearButton.addEventListener('click', Calculator.Clear);
+
 
     //when sign is pressed, the output changes sign
     let signButton = document.querySelector('#sign');
 
-    signButton.addEventListener('click', function ChangeSign()
-    {
-        output.textContent = -(+output.textContent);
-    });
+    signButton.addEventListener('click', Calculator.ChangeSign);
+
 
     //when the decimal is pressed, a decimal is added if one isn't present
     let decimalButton = document.querySelector('#decimal');
 
-    decimalButton.addEventListener('click', function AddDecimal()
-    {
-        if (hasDecimal == false)
-        {
-            output.textContent += ".";
-            hasDecimal = true;
-        }
-    });
+    decimalButton.addEventListener('click', Calculator.AddDecimal);
+
 
     //when an operator is pressed, the first operand and operator are saved
     let operatorButtons = document.querySelectorAll('.operator');
 
     operatorButtons.forEach((operatorButton) =>
     {
-        operatorButton.addEventListener('click', (e) =>
+        operatorButton.addEventListener('click', function UseOperator(e)
         {
             //only proceed if another operator isn't already active
-            if (operatorActive == false)
+            if (!this.operatorActive)
             {
-                operand1 = +(output.textContent);
-                operator = e.currentTarget.id;
-                operatorActive = true;
+                Calculator.operand1 = +(output.textContent);
+                Calculator.operator = e.currentTarget.id;
+                Calculator.operatorActive = Calculator;
 
                 output.textContent = '';
-                hasDecimal = false;
             }
         });
     });
 
+
     //when the equal button is pressed, the second operator is saved and the result is calculated
     let equalButton = document.querySelector('#equal');
 
-    equalButton.addEventListener('click', () =>
+    equalButton.addEventListener('click', function GetResult()
     {
         //only proceed if an operator is active and the textContent isn't empty
-        if (operatorActive && output.textContent != '')
-        {
-            operand2 = +(output.textContent);
-            output.textContent = operate(operand1, operand2, operator);
-
-            operatorActive = false;
-            if (output.textContent.includes('.'))
-            {
-                hasDecimal = true;
-            }
-            else
-            {
-                hasDecimal = false;
-            }
+        if (Calculator.operatorActive && output.textContent != '')
+        {  
+            Calculator.operand2 = +(output.textContent);
+            output.textContent = Operate(Calculator.operand1, Calculator.operand2, Calculator.operator);
+            Calculator.operatorActive = false;
         }
     });
 }
 
-function operate(operand1, operand2, operator)
+function Operate(operand1, operand2, operator)
 {
     switch(operator)
     {
